@@ -2,10 +2,7 @@
   <div class="home">
     <div class="grid md:grid-cols-2 sm:grid-cols-1 gap-4 space-x-40">
       <div class="bg-gray-800 h-72 md:w-auto sm:w-20 bg-opacity-50">
-        <div class="hero-body has-text-centered">
-          <p class="text-white text-7xl align-middle ">EL MEJOR GIMNASIO</p>
-          <p class="text-white subtitle align-middle ">Ahora desde tu ordenador</p>
-        </div>
+        <img src="../assets/bg.png" alt="EL MEJOR GIMNASIO  Ahora desde tu ordenador">
       </div>
       <div>
         <template v-if="$store.state.isAuthenticated">
@@ -84,13 +81,13 @@ export default {
   },
   methods: {
     printPage(){
-      if(this.$refs.calendar != null){
-        console.log(this.$refs.calendar.pages[0].key);
-      }
+      // if(this.$refs.calendar != null){
+      //   console.log(this.$refs.calendar.pages[0].key);
+      // }
     },
     normalizeInfo(data){
       for (var key in data) {
-        if(key != 'id' && typeof key != 'number'){
+        if(key != 'id' && key != 'get_absolute_url'  && typeof key != 'number'){
           if(typeof data[key] == 'object'){
             // this.userInfo.push({"key":key, "value":null})
             this.normalizeInfo(data[key])
@@ -99,6 +96,7 @@ export default {
           }
         }
       }
+      this.$store.commit('setInfo', this.userInfo);
     },
     async submitForm() {
         this.$store.commit("setIsLoading", true);
@@ -126,12 +124,12 @@ export default {
                 this.errors.push('Something went wrong. Please try again')
             }
         })
-        localStorage.removeItem("userInfo")
+        
         await axios
         .get("/api/v1/personInfo/")
         .then((response) => {
           this.normalizeInfo(response.data)
-          this.$store.commit('setInfo', this.userInfo);
+          
           // const toPath = this.$route.query.to || '/'
           // this.$router.push(toPath)
         })
@@ -153,8 +151,8 @@ export default {
             dismissible: true, pauseOnHover: true,duration: 2000, position: "bottom-right",
           });
         });
-        location.reload();
         this.$store.commit("setIsLoading", false);
+        location.reload();
     },
     async getActivities(){
       this.$store.commit("setIsLoading", true);
@@ -185,10 +183,10 @@ export default {
         },
         // Attributes for todos
         ...this.todos.map((todo) => ({
-          dates: new Date(todo.schedule.year,todo.schedule.month-1, todo.dayofmonth),
-          // dates: {weekdays:todo.dayofweek, months:todo.schedule.month , years:todo.schedule.year},
+          // dates: new Date(todo.schedule.year,todo.schedule.month-1, todo.dayofmonth),
+          dates: {weekdays:todo.dayofweek, months:todo.schedule.month , years:todo.schedule.year},
           dot: {
-            color: "red",
+            color: this.colors[Math.floor(Math.random() * this.colors.length)],
           },
           popover: {
             label: todo.service_name+" - "+todo.teacher_name+ " - " +(todo.startime) + "-" + (todo.endtime),

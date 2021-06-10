@@ -2,7 +2,12 @@
   <div class="bg-white">
     <div v-if="canAddService">
       <button v-on:click ='newOne = !newOne' class="fixed z-50 bottom-10 right-10 w-12 h-12 bg-red-600 rounded-full hover:bg-red-700 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none">
-        <PlusIcon class="text-white" aria-hidden="true" />
+        <div v-if="newOne">
+          <XIcon class="text-white" aria-hidden="true" />
+        </div>
+        <div v-else>
+          <PlusIcon class="text-white" aria-hidden="true" />
+        </div>
       </button>
     </div>
     <div class="max-w-7xl mx-auto px-4 sm:px-7 lg:px-8">
@@ -13,7 +18,8 @@
               <div class="grid relative md:grid-cols-2 sm:grid-cols-1">
                 <div>
                   <span class="font-extrabold">Descripción: </span>
-                  <input class="sm:w-10 md:w-52" :disabled="!isBeingChange(service.get_absolute_url)" type="text" v-model="service.description" placeholder="Descripción..." aria-label="Full name">
+                  <textarea class="sm:w-10 md:w-52 md:h-14" :disabled="!isBeingChange(service.get_absolute_url)" type="text" v-model="service.description" placeholder="Descripción..." aria-label="Full name">
+                  </textarea>
                 </div>
                 <div> 
                   <button  v-if="canDeleteService" v-on:click ='deleteService(service.id)' type="button" class="absolute top-0 right-8 -mr-1 p-2 rounded-md transition hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-white sm:-mr-2">
@@ -47,7 +53,8 @@
                   <input v-model="name" class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" placeholder="Nombre de Servicio" aria-label="Full name">
                 </div>
                 <div class="flex items-center border-b border-teal-500 py-2">
-                  <input v-model="description" class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" placeholder="Descripción" aria-label="Full name">
+                  <textarea v-model="description" class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" placeholder="Descripción" aria-label="Full name">
+                  </textarea>
                 </div>
                 <div class="flex items-center border-b border-teal-500 py-2">
                   <input v-model="hourfee" class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="number" placeholder="Monto por Hora" aria-label="Full name">
@@ -70,7 +77,7 @@ import { toast } from 'bulma-toast'
 import Selector from "../components/Selector";
 import Multiselect from '@vueform/multiselect';
 import Disclosure from "../components/Disclosure";
-import { PlusIcon, CheckCircleIcon  } from "@heroicons/vue/outline";
+import { PlusIcon, CheckCircleIcon,XIcon  } from "@heroicons/vue/outline";
 
 
 
@@ -82,6 +89,7 @@ export default {
     Disclosure,
     Multiselect,
     CheckCircleIcon,
+    XIcon,
   },
   data() {
     return {
