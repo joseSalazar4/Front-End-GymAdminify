@@ -5,7 +5,7 @@ import store from './store'
 import axios from 'axios'
 import './index.css'
 
-axios.defaults.baseURL = 'http://37dfec397d45.ngrok.io/'
+axios.defaults.baseURL = 'https://37dfec397d45.ngrok.io/'
 
 createApp(App).use(store).use(router,axios).mount('#app')
 
